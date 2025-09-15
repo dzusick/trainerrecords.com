@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trainer Records</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      height: 100%;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+
+    .border-frame {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 80px solid #000;
+      box-sizing: border-box;
+      pointer-events: none;
+      z-index: 10;
+      transition: border-width 0.5s ease;
+    }
+
+    .content {
+      min-height: 200vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    .text-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-weight: 600;
+      font-size: clamp(32px, 8vw, 80px);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-stretch: expanded;
+      white-space: nowrap;
+      color: #000;
+      text-align: center;
+      transition: opacity 0.5s ease, color 0.3s ease, background-color 0.3s ease;
+      z-index: 5;
+      pointer-events: none;
+      padding: 0.2em 0.5em;
+    }
+
+    .text-container.negative {
+      color: #fff;
+      background-color: #000;
+    }
+
+    .pulse {
+      animation: pulse 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.35; }
+      100% { opacity: 0.7; }
+    }
+
+    .follower {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 80px;
+      height: 80px;
+      pointer-events: none;
+      z-index: 6;
+      transform: translate3d(-50%, -50%, 0);
+      background: #000;
+      transition: opacity 0.5s ease;
+      border-radius: 4px;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 50px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 1.5vw;
+      color: #000;
+      font-weight: 500;
+      z-index: 1;
+      padding: 0.2em 0.5em;
+      transition: color 0.3s ease, background-color 0.3s ease;
+      display: inline-block;
+      user-select: none;
+    }
+
+    .footer.negative {
+      color: #fff;
+      background-color: #000;
+    }
+
+    .footer a {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 420px) {
+      .text-container {
+        font-size: clamp(24px, 12vw, 64px);
+      }
+      .follower {
+        width: 56px;
+        height: 56px;
+      }
+      .footer {
+        font-size: 3vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="border-frame" id="borderFrame"></div>
+
+  <div class="content" id="contentWrapper">
+    <div class="text-container pulse" id="mainText">Trainer Records LTD, 2025</div>
+    <div class="follower" id="follower"></div>
+
+    <div class="footer" id="footerText">
+      Want to join us? Text us! <a href="mailto:contact.trainerrecords@gmail.com">contact.trainerrecords@gmail.com</a>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const follower = document.getElementById('follower');
+      const mainText = document.getElementById('mainText');
+      const footerText = document.getElementById('footerText');
+      const borderFrame = document.getElementById('borderFrame');
+
+      let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+      let currentX = mouseX, currentY = mouseY;
+      const ease = 0.25;
+
+      function isIntersecting(elementRect, followerRect) {
+        return !(
+          followerRect.right < elementRect.left ||
+          followerRect.left > elementRect.right ||
+          followerRect.bottom < elementRect.top ||
+          followerRect.top > elementRect.bottom
+        );
+      }
+
+      function checkIntersection() {
+        const followerRect = {
+          left: currentX - follower.offsetWidth / 2,
+          right: currentX + follower.offsetWidth / 2,
+          top: currentY - follower.offsetHeight / 2,
+          bottom: currentY + follower.offsetHeight / 2
+        };
+
+        const mainRect = mainText.getBoundingClientRect();
+        const footerRect = footerText.getBoundingClientRect();
+
+        if (isIntersecting(mainRect, followerRect)) {
+          mainText.classList.add('negative');
+        } else {
+          mainText.classList.remove('negative');
+        }
+
+        if (isIntersecting(footerRect, followerRect)) {
+          footerText.classList.add('negative');
+        } else {
+          footerText.classList.remove('negative');
+        }
+      }
+
+      function updatePointer(e) {
+        if (e.touches && e.touches[0]) {
+          mouseX = e.touches[0].clientX;
+          mouseY = e.touches[0].clientY;
+        } else {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        }
+      }
+
+      window.addEventListener('mousemove', updatePointer, { passive: true });
+      window.addEventListener('touchmove', updatePointer, { passive: true });
+
+      function animate() {
+        currentX += (mouseX - currentX) * ease;
+        currentY += (mouseY - currentY) * ease;
+        follower.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+
+        checkIntersection();
+
+        requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        const fadeFactor = Math.max(0, 1 - scrollY / 400);
+
+        mainText.style.opacity = fadeFactor;
+        borderFrame.style.borderWidth = `${80 * fadeFactor}px`;
+        // follower залишається видимим, тому opacity не змінюємо
+      });
+
+      document.documentElement.style.cursor = 'none';
+      window.addEventListener('keydown', e => {
+        if (e.key === ' ' || e.key === 'Escape') {
+          document.documentElement.style.cursor = '';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
