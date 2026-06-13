@@ -1,229 +1,253 @@
-<!doctype html>
-<html lang="uk">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trainer Records</title>
-  <meta name="description" content="Music Distribution, White Label, Join Today!" />
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      height: 100%;
-      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trainer Records</title>
 
-    .border-frame {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border: 80px solid #000;
-      box-sizing: border-box;
-      pointer-events: none;
-      z-index: 10;
-      transition: border-width 0.5s ease;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
-    .content {
-      min-height: 200vh;
-      position: relative;
-      z-index: 1;
-    }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
 
-    .text-container {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-weight: 600;
-      font-size: clamp(32px, 8vw, 80px);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-stretch: expanded;
-      white-space: nowrap;
-      color: #000;
-      text-align: center;
-      transition: opacity 0.5s ease, color 0.3s ease, background-color 0.3s ease;
-      z-index: 5;
-      pointer-events: none;
-      padding: 0.2em 0.5em;
-    }
+body {
+    background: #070707;
+    color: white;
+    overflow-x: hidden;
+}
 
-    .text-container.negative {
-      color: #fff;
-      background-color: #000;
-    }
+/* Background glow */
+.bg-glow {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(120,119,255,0.25) 0%, rgba(0,0,0,0) 70%);
+    top: -150px;
+    right: -150px;
+    filter: blur(80px);
+    z-index: -1;
+}
 
-    .pulse {
-      animation: pulse 2s ease-in-out infinite alternate;
-    }
+.bg-glow2 {
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,0,140,0.15) 0%, rgba(0,0,0,0) 70%);
+    bottom: -120px;
+    left: -120px;
+    filter: blur(100px);
+    z-index: -1;
+}
 
-    @keyframes pulse {
-      0% { opacity: 0.35; }
-      100% { opacity: 0.7; }
-    }
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
 
-    .follower {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 80px;
-      height: 80px;
-      pointer-events: none;
-      z-index: 6;
-      transform: translate3d(-50%, -50%, 0);
-      background: #000;
-      transition: opacity 0.5s ease;
-      border-radius: 4px;
-    }
+/* Hero */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+}
 
-    .footer {
-      position: absolute;
-      bottom: 50px;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      font-size: 1.5vw;
-      color: #000;
-      font-weight: 500;
-      z-index: 1;
-      padding: 0.2em 0.5em;
-      transition: color 0.3s ease, background-color 0.3s ease;
-      display: inline-block;
-      user-select: none;
-    }
+.hero-content {
+    max-width: 850px;
+}
 
-    .footer.negative {
-      color: #fff;
-      background-color: #000;
-    }
+.logo {
+    font-size: 14px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #8a8a8a;
+    margin-bottom: 25px;
+}
 
-    .footer a {
-      color: inherit;
-      text-decoration: underline;
-    }
+h1 {
+    font-size: clamp(2.7rem, 8vw, 5.5rem);
+    line-height: 1;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
 
-    @media (max-width: 420px) {
-      .text-container {
-        font-size: clamp(24px, 12vw, 64px);
-      }
-      .follower {
-        width: 56px;
-        height: 56px;
-      }
-      .footer {
-        font-size: 3vw;
-      }
+.gradient-text {
+    background: linear-gradient(90deg, #8e7dff, #ff4fc0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: #c9c9c9;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    max-width: 700px;
+    margin: auto;
+}
+
+.notice {
+    margin-top: 35px;
+    display: inline-block;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 18px 28px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.notice strong {
+    color: #ff6bbd;
+}
+
+/* Artists Section */
+.section {
+    padding: 100px 0;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    font-weight: 800;
+}
+
+.artists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+.artist-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: 0.35s ease;
+    backdrop-filter: blur(14px);
+}
+
+.artist-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(142,125,255,0.5);
+    box-shadow: 0 20px 50px rgba(142,125,255,0.15);
+}
+
+.artist-image {
+    height: 270px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.artist-info {
+    padding: 22px;
+}
+
+.artist-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.artist-role {
+    color: #a5a5a5;
+    font-size: 0.95rem;
+}
+
+footer {
+    text-align: center;
+    padding: 40px;
+    color: #777;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+@media(max-width: 768px){
+    .hero {
+        min-height: auto;
+        padding-top: 100px;
+        padding-bottom: 80px;
     }
-  </style>
+}
+</style>
 </head>
 <body>
-  <div class="border-frame" id="borderFrame"></div>
 
-  <div class="content" id="contentWrapper">
-    <div class="text-container pulse" id="mainText">Trainer Records</div>
-    <div class="follower" id="follower"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow2"></div>
 
-    <div class="footer" id="footerText">
-      © Trainer Records 2026 <a href="mailto:contact.trainerrecords@gmail.com">contact.trainerrecords@gmail.com</a>
+<section class="hero">
+    <div class="hero-content">
+        <div class="logo">Trainer Records 2026</div>
+
+        <h1>
+            We Are <span class="gradient-text">Not Accepting</span><br>
+            New Applications
+        </h1>
+
+        <p class="subtitle">
+            We currently do not accept new applications for our music distribution services. 
+            However, below you can explore our signed and officially distributed artists.
+        </p>
+
+        <div class="notice">
+            <strong>Status:</strong> CLOSED
+        </div>
     </div>
-  </div>
+</section>
 
-  <script>
-    (() => {
-      const follower = document.getElementById('follower');
-      const mainText = document.getElementById('mainText');
-      const footerText = document.getElementById('footerText');
-      const borderFrame = document.getElementById('borderFrame');
+<section class="section container">
+    <h2 class="section-title">
+        Our FAMOUS Signed Artists
+    </h2>
 
-      let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-      let currentX = mouseX, currentY = mouseY;
-      const ease = 0.25;
+    <div class="artists-grid">
 
-      function isIntersecting(elementRect, followerRect) {
-        return !(
-          followerRect.right < elementRect.left ||
-          followerRect.left > elementRect.right ||
-          followerRect.bottom < elementRect.top ||
-          followerRect.top > elementRect.bottom
-        );
-      }
+        <div class="artist-card">
+            <img class="artist-image" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=900" alt="Artist">
+            <div class="artist-info">
+                <div class="artist-name">Keenan Febrian</div>
+                <div class="artist-role">Alternative / Cloud Rap</div>
+            </div>
+        </div>
 
-      function checkIntersection() {
-        const followerRect = {
-          left: currentX - follower.offsetWidth / 2,
-          right: currentX + follower.offsetWidth / 2,
-          top: currentY - follower.offsetHeight / 2,
-          bottom: currentY + follower.offsetHeight / 2
-        };
+        <div class="artist-card">
+            <img class="artist-image" src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=900" alt="Artist">
+            <div class="artist-info">
+                <div class="artist-name">yyeuvsky</div>
+                <div class="artist-role">Pop / Experimental</div>
+            </div>
+        </div>
 
-        const mainRect = mainText.getBoundingClientRect();
-        const footerRect = footerText.getBoundingClientRect();
+        <div class="artist-card">
+            <img class="artist-image" src=""https://i.scdn.co/image/ab67616d00001e02f4afc0766114a8c2d6e14a3d 150w, https://i.scdn.co/image/ab67616d00001e02f4afc0766114a8c2d6e14a3d 300w, https://i.scdn.co/image/ab67616d0000b273f4afc0766114a8c2d6e14a3d 320w, https://i.scdn.co/image/ab67616d0000b273f4afc0766114a8c2d6e14a3d 640w"" alt="Artist">
+            <div class="artist-info">
+                <div class="artist-name">wickbuy</div>
+                <div class="artist-role">Hip-Hop / Trap</div>
+            </div>
+        </div>
 
-        if (isIntersecting(mainRect, followerRect)) {
-          mainText.classList.add('negative');
-        } else {
-          mainText.classList.remove('negative');
-        }
+        <div class="artist-card">
+            <img class="artist-image" src="https://images.unsplash.com/photo-1487180144351-b8472da7d491?w=900" alt="Artist">
+            <div class="artist-info">
+                <div class="artist-name">Yeat Leaked</div>
+                <div class="artist-role">Electronic / Hyperpop</div>
+            </div>
+        </div>
 
-        if (isIntersecting(footerRect, followerRect)) {
-          footerText.classList.add('negative');
-        } else {
-          footerText.classList.remove('negative');
-        }
-      }
+    </div>
+</section>
 
-      function updatePointer(e) {
-        if (e.touches && e.touches[0]) {
-          mouseX = e.touches[0].clientX;
-          mouseY = e.touches[0].clientY;
-        } else {
-          mouseX = e.clientX;
-          mouseY = e.clientY;
-        }
-      }
+<footer>
+    Trainer Records
+</footer>
 
-      window.addEventListener('mousemove', updatePointer, { passive: true });
-      window.addEventListener('touchmove', updatePointer, { passive: true });
-
-      function animate() {
-        currentX += (mouseX - currentX) * ease;
-        currentY += (mouseY - currentY) * ease;
-        follower.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
-
-        checkIntersection();
-
-        requestAnimationFrame(animate);
-      }
-      requestAnimationFrame(animate);
-
-      window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-        const fadeFactor = Math.max(0, 1 - scrollY / 400);
-
-        mainText.style.opacity = fadeFactor;
-        borderFrame.style.borderWidth = `${80 * fadeFactor}px`;
-        // follower залишається видимим, тому opacity не змінюємо
-      });
-
-      document.documentElement.style.cursor = 'none';
-      window.addEventListener('keydown', e => {
-        if (e.key === ' ' || e.key === 'Escape') {
-          document.documentElement.style.cursor = '';
-        }
-      });
-    })();
-  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
